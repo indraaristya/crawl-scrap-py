@@ -6,6 +6,7 @@ from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
+import summarize
 
 
 def simple_get(url):
@@ -67,18 +68,21 @@ def scrape(listUrl):
             content_per_p.append(j.text)
         content.append(''.join(content_per_p))
         upvote.append(html.select('span.float-right.upvote_stat')[0].text)
+        summary.append(summarize.summarize_content(title[i], content[i]))
     return title, content, upvote, summary
 
 
 url = 'https://www.allkpop.com/'
-print("Get Link")
+print("\nGet Link...")
 list_of_url = get_link(url)
 print("Scrapping...")
 titles, contents, upvotes, summary = scrape(list_of_url)
 
 for i in range(len(titles)):
     print(i)
+    print("     URL: ",list_of_url[i])
     print("     Title: ",titles[i])
-    print("     Content: ",contents[i])
+    print("     Content: ",contents[i],"\n")
+    print("     Summary: ",summary[i],"\n")
     print("     ",upvotes[i])
     print("============================================================")
